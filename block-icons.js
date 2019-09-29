@@ -119,7 +119,7 @@ class BlockIcons extends LitElement {
   styleIcon() {
     let cssIcon = '';
     let counter = 1;
-    for (let col = 1; col <= this.numMaxIcons / 2; col++) {
+    for (let col = 1; col <= Math.ceil(this.numMaxIcons / 2); col++) {
       for (let row = 1; row <= 2; row++) {
         cssIcon += `
           .icon:nth-child(${counter}) {
