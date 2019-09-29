@@ -18,6 +18,7 @@ class BlockIcons extends LitElement {
   static get properties() {
     return {
       href: { type: String },
+      blockWidth: { type: Number, attribute: 'block-width' },
       numIcons: { type: Number },
       numMaxIcons: { type: Number },
       bloqueCSS: { type: String }
@@ -27,22 +28,12 @@ class BlockIcons extends LitElement {
   static get styles() {
     return css`
       :host {
-        background: #FF0;
-        --block-size: 300px;
         --relation-mobile: 3.5;
       }
       a { color: #000; text-decoration:none; }
 
-      .block {
-        max-width: var(--block-size);
-        min-width: var(--block-size);  
-        height: var(--block-size);
-        background: #FF0;
-        padding: 10px;
-      }
-      .plus:before {
-        content: "\\002B";
-        font-size: 130px;
+      .block-icon__plus-internal {
+        border:1px solid black;
       }
     `;
   }
@@ -56,8 +47,6 @@ class BlockIcons extends LitElement {
     this.bloqueCSS = '';
 
     this.blockWidth = 300;
-    this.iconWidth = this.blockWidth / 2;
-    this.maxScreenWidth = 10 * this.blockWidth / 6; // 500;
 
     this.screenWidth = document.documentElement.clientWidth;
     this.hostWidth = 0;
@@ -66,10 +55,16 @@ class BlockIcons extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this.iconWidth = this.blockWidth / 2;
+    this.maxScreenWidth = 10 * this.blockWidth / 6; // 500;
     window.addEventListener('resize', this.styleCalc.bind(this));
   }
 
   firstUpdated() {
+    /* GET STYLE CONTENT */
+    let iniStyle = this.innerHTML.indexOf('<!--style>') + 10;
+    let endStyle = this.innerHTML.indexOf('</style-->');
+    this.styleContent = this.innerHTML.substring(iniStyle, endStyle) || '';
     /* GET BLOCK CONTENT */
     let blockContent = this.innerHTML.match(/<!--block-content>(.*)<\/block-content-->/);
     this.blockContent = blockContent[1];
@@ -86,17 +81,17 @@ class BlockIcons extends LitElement {
     let icons = '';
     let i;
     for (i = 1; i <= numIcons; i++) {
-      icons += `<div id="icon_${i}" class="icon">${this.iconsContent[i - 1]}</div>`;
+      icons += `<div id="icon_${i}" class="block-icon__icon-internal">${this.iconsContent[i - 1]}</div>`;
     }
     if (this.screenWidth >= this.maxScreenWidth) {
-      icons += `<div id="icon_${i}" class="icon plus"></div>`;
+      icons += `<div id="icon_${i}" class="block-icon__icon-internal block-icon__plus-internal"></div>`;
     }
     return `${icons}`;
   }
 
   getNumIconsToDraw(minWidth, maxWidth, maxIcons) {
     let numIconsToShow = null;
-    /* this.shadowRoot.querySelector('.block').innerHTML = this.hostWidth + ', ' + minWidth + ', ' + maxWidth + ', MaxIcons: ' + maxIcons; */
+    /* this.shadowRoot.querySelector('.block-icon__block-internal').innerHTML = this.hostWidth + ', ' + minWidth + ', ' + maxWidth + ', MaxIcons: ' + maxIcons; */
     if (this.hostWidth >= minWidth && this.hostWidth < maxWidth) {
       numIconsToShow = (this.numIcons < maxIcons) ? ((this.numIcons % 2 === 0) ? this.numIcons : this.numIcons + 1) : maxIcons;
     }
@@ -122,7 +117,7 @@ class BlockIcons extends LitElement {
     for (let col = 1; col <= Math.ceil(this.numMaxIcons / 2); col++) {
       for (let row = 1; row <= 2; row++) {
         cssIcon += `
-          .icon:nth-child(${counter}) {
+          .block-icon__icon-internal:nth-child(${counter}) {
             grid-row-start: ${row};
             grid-row-end: ${row + 1};
             grid-column-start: ${col};
@@ -136,36 +131,47 @@ class BlockIcons extends LitElement {
   }
 
   styleCalc() {
-    this.hostWidth = this.shadowRoot.querySelector('.container').clientWidth;
+    this.hostWidth = this.shadowRoot.getElementById('container').clientWidth;
     this.screenWidth = document.documentElement.clientWidth;
-    /* this.shadowRoot.querySelector('.block').innerHTML = 'WC: ' + this.hostWidth + ' - SCREEN: ' + this.screenWidth; */
+    /*this.shadowRoot.querySelector('.block-icon__block-internal').innerHTML = 'WC: ' + this.hostWidth + ' - SCREEN: ' + this.screenWidth; // */
     this.shadowRoot.getElementById('block').innerHTML = this.blockContent;
     let common = `
-      .icons {
+      :host {
+        --block-size: ${this.blockWidth}px;
+      }
+      .block-icon__block-internal {
+        max-width: var(--block-size);
+        min-width: var(--block-size);  
+        height: var(--block-size);
+      }
+      .block-icon__icons-internal {
         display: grid;
       }
-      .icon {
-        background: #55F;
-        border:1px solid blue;
+      .block-icon__icon-internal {
         margin:0 auto;
         text-align:center;
         vertical-align:middle;
+        border:1px solid black;
+      }
+      .block-icon__plus-internal:before {
+        content: "\\002B";
+        font-size: calc(var(--block-size) * 0.43);
       }
     `;
     if (this.screenWidth >= this.maxScreenWidth) {
       this.bloqueCSS = html`
         ${common}
-        .container {
+        ${this.styleContent}
+        .block-icon__container-internal {
           display: flex;
           flex-flow: row;
-          height: var(--block-size);
+          height: calc(var(--block-size)*1.02);
           width:90vw;
           margin: 0 auto;
-          border:0px solid red;
           overflow:hidden;
           max-width: 1200px;
         }
-        .icon {
+        .block-icon__icon-internal {
           height: calc(var(--block-size)/2);
           width: calc(var(--block-size)/2);
         }
@@ -176,12 +182,13 @@ class BlockIcons extends LitElement {
     } else {
       this.bloqueCSS = html`
         ${common}
-        .container {
+        ${this.styleContent}
+        .block-icon__container-internal {
           width: calc(var(--block-size)*1.1);
           height: calc(var(--block-size)*1.33);
           flex-flow: column;
         }
-        .icons {
+        .block-icon__icons-internal {
           grid-gap: 0;
           grid-template-columns: repeat(12, calc(var(--block-size)/var(--relation-mobile)));
           grid-template-rows: minmax(var(--block-size), 1fr);
@@ -192,7 +199,7 @@ class BlockIcons extends LitElement {
           margin: 0;
           height: calc(var(--block-size)/3);
         }
-        .icon {
+        .block-icon__icon-internal {
           width: calc(var(--block-size)/var(--relaction-mobile));
           height: calc(var(--block-size)/3);
           margin:0;
@@ -208,11 +215,11 @@ class BlockIcons extends LitElement {
         ${this.bloqueCSS}
       </style>
       <a href="${this.href}">
-        <div class="container">
-          <div id="block" class="block">
+        <div id="container" class="block-icon__container-internal">
+          <div id="block" class="block-icon__block-internal">
             BLOCK
           </div>
-          <div id="icons" class="icons"></div>
+          <div id="icons" class="block-icon__icons-internal"></div>
         </div>
       </a>
     `;

@@ -1,7 +1,7 @@
 {
   "name": "block-icons",
   "description": "Lit-Element webcomponent block-icons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "block-icons.js",
   "repository": {
     "type": "git",
@@ -31,5 +31,8 @@
   },
   "scripts": {
     "build": "rm -rf build && mkdir build && rollup -c"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
   }
 }
