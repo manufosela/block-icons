@@ -1,4 +1,8 @@
-import { LitElement, html, css } from 'lit-element';
+import {
+  LitElement,
+  html,
+  css
+} from 'lit-element';
 
 /**
  * `block-icons`
@@ -17,16 +21,27 @@ class BlockIcons extends LitElement {
 
   static get properties() {
     return {
-      href: { type: String },
-      blockWidth: { type: Number, attribute: 'block-width' },
-      numIcons: { type: Number },
-      numMaxIcons: { type: Number },
-      bloqueCSS: { type: String }
+      href: {
+        type: String
+      },
+      blockWidth: {
+        type: Number,
+        attribute: 'block-width'
+      },
+      numIcons: {
+        type: Number
+      },
+      numMaxIcons: {
+        type: Number
+      },
+      bloqueCSS: {
+        type: String
+      }
     };
   }
 
   static get styles() {
-    return css`
+    return css `
       :host {
         --relation-mobile: 3.5;
       }
@@ -71,7 +86,7 @@ class BlockIcons extends LitElement {
     /* GET ICONS CONTENT */
     let iconsContent = this.innerHTML.match(/<!--icon-content>.*<\/icon-content-->/g);
     this.numIcons = iconsContent.length;
-    this.iconsContent = iconsContent.map((icon)=>{
+    this.iconsContent = iconsContent.map((icon) => {
       return icon.replace(/<!--icon-content>(.*)<\/icon-content-->/, '$1');
     });
     this.styleCalc();
@@ -94,6 +109,9 @@ class BlockIcons extends LitElement {
     /* this.shadowRoot.querySelector('.block-icon__block-internal').innerHTML = this.hostWidth + ', ' + minWidth + ', ' + maxWidth + ', MaxIcons: ' + maxIcons; */
     if (this.hostWidth >= minWidth && this.hostWidth < maxWidth) {
       numIconsToShow = (this.numIcons < maxIcons) ? ((this.numIcons % 2 === 0) ? this.numIcons : this.numIcons + 1) : maxIcons;
+    }
+    if (maxIcons === (this.numMaxIcons - 2) && numIconsToShow === null) {
+      numIconsToShow = this.numIcons;
     }
     return numIconsToShow;
   }
@@ -159,7 +177,7 @@ class BlockIcons extends LitElement {
       }
     `;
     if (this.screenWidth >= this.maxScreenWidth) {
-      this.bloqueCSS = html`
+      this.bloqueCSS = html `
         ${common}
         ${this.styleContent}
         .block-icon__container-internal {
@@ -180,7 +198,7 @@ class BlockIcons extends LitElement {
       this.showIconsByWidth();
       this.shadowRoot.getElementById('icons').innerHTML = this.drawIcons(this.numIconsToShow);
     } else {
-      this.bloqueCSS = html`
+      this.bloqueCSS = html `
         ${common}
         ${this.styleContent}
         .block-icon__container-internal {
@@ -210,7 +228,7 @@ class BlockIcons extends LitElement {
   }
 
   render() {
-    return html`
+    return html `
       <style>
         ${this.bloqueCSS}
       </style>

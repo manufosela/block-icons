@@ -1,68 +1,73 @@
 <!doctype html>
 <html>
-  <head>
-    <title>block-icons demo</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script type="module" src="../block-icons.js"></script>
-    <style>
-      .blocks {
-        display:flex;
-        flex-direction:row;
-        flex-wrap: wrap;
-      }
-      .block {
-        display:flex;
-        flex-direction:column;
-        flex-wrap: wrap;
-        white-space: normal;
-      }
-      .code {
-        padding: 20px;
-        color:#FFF; 
-        background: #000;
-      }
-      .attributes {
-        padding-left: 20px;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic block-icons Demo</h3>
-      <div class="blocks">
-        <pre class="block code">
+<head>
+  <title>block-icons demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script type="module" src="../block-icons.js"></script>
+  <style>
+    .blocks {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .block {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      white-space: normal;
+    }
+
+    .code {
+      padding: 20px;
+      color: #FFF;
+      background: #000;
+    }
+
+    .attributes {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic block-icons Demo</h3>
+    <div class="blocks">
+      <pre class="block code">
           <code>
             &lt;block-icons&gt;&lt;/block-icons&gt;
           </code>
         </pre>
-        <pre class="block attributes">
+      <pre class="block attributes">
           <h3>Attributes</h3>
           <ul>
             <li>href (String)</li>
           </ul>
         </pre>
-      </div>
+    </div>
 
-      <block-icons block-width="300">
-        <!--style>
+    <block-icons block-width="250">
+      <!--style>
           .contenido {
             padding: 20px;
             background:yellow;
-            height: 90%;
+            height: -webkit-fill-available;
           }
           .icono {
             margin: 20px;
             background: cyan;
           }
         </style-->
-        <!--block-content><div class="contenido">HOLA SOY EL BLOCK DE BLOCK-ICONS</div></block-content-->
-        <!--icon-content><div class="icono">ICONO 1</div></icon-content-->
-        <!--icon-content><div class="icono">ICONO 2</div></icon-content-->
-        <!--icon-content><div class="icono">ICONO 3</div></icon-content-->
-        <!--icon-content><div class="icono">ICONO 4</div></icon-content-->
-      </block-icons>
-    </div>
-  </body>
+      <!--block-content><div class="contenido">HOLA SOY EL BLOCK DE BLOCK-ICONS</div></block-content-->
+      <!--icon-content><div class="icono">ICONO 1</div></icon-content-->
+      <!--icon-content><div class="icono">ICONO 2</div></icon-content-->
+      <!--icon-content><div class="icono">ICONO 3</div></icon-content-->
+      <!--icon-content><div class="icono">ICONO 4</div></icon-content-->
+    </block-icons>
+  </div>
+</body>
+
 </html>
