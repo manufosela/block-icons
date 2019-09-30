@@ -33,6 +33,6 @@
     "build": "rm -rf build && mkdir build && rollup -c"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
